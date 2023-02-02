@@ -1,26 +1,32 @@
 export const REQUEST_STARTED = 'REQUEST_STARTED';
-export const REQUEST_SUCCESSFUL = 'REQUEST_SUCCESSFUL';
-export const REQUEST_FAILED = 'REQUEST_FAILED';
+export const REQUEST_CURRENCIES_SUCCESSFUL = 'REQUEST_CURRENCIES_SUCCESSFUL';
+export const REQUEST_CURRENCIES_FAILED = 'REQUEST_CURRENCIES_SUCCESSFUL';
+
+export const ADD_EMAIL = 'ADD_EMAIL';
+export const ADD_EXPENSE = 'ADD_EXPENSE';
 
 const URL = 'https://economia.awesomeapi.com.br/json/all';
 
-export const ADD_EMAIL = 'ADD_EMAIL';
+const requestStarted = () => ({ type: REQUEST_STARTED });
 
-export const requestStarted = () => ({ type: REQUEST_STARTED });
-
-export const requestSuccessful = (data) => ({
-  type: REQUEST_SUCCESSFUL,
-  payload: data,
+const requestCurrenciesSuccessful = (currencies) => ({
+  type: REQUEST_CURRENCIES_SUCCESSFUL,
+  payload: currencies,
 });
 
-export const requestFailed = (error) => ({
-  type: REQUEST_FAILED,
+const requestCurrenciesFailed = (error) => ({
+  type: REQUEST_CURRENCIES_FAILED,
   payload: error,
 });
 
 export const addEmail = (email) => ({
   type: ADD_EMAIL,
   payload: email,
+});
+
+export const addExpense = (expense) => ({
+  type: ADD_EXPENSE,
+  payload: expense,
 });
 
 export const fetchCurrencies = () => async (dispatch) => {
@@ -30,10 +36,12 @@ export const fetchCurrencies = () => async (dispatch) => {
     const response = await fetch(URL);
     const data = await response.json();
 
-    const currencies = Object.keys(data).filter((currency) => currency !== 'USDT');
+    const currencies = Object.keys(data).filter(
+      (currency) => currency !== 'USDT',
+    );
 
-    dispatch(requestSuccessful(currencies));
+    dispatch(requestCurrenciesSuccessful(currencies));
   } catch (error) {
-    dispatch(requestFailed(error));
+    dispatch(requestCurrenciesFailed(error));
   }
 };

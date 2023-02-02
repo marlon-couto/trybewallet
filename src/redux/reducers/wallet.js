@@ -1,7 +1,8 @@
 import {
-  REQUEST_FAILED,
   REQUEST_STARTED,
-  REQUEST_SUCCESSFUL,
+  REQUEST_CURRENCIES_FAILED,
+  REQUEST_CURRENCIES_SUCCESSFUL,
+  ADD_EXPENSE,
 } from '../actions/index';
 
 const INITIAL_STATE = {
@@ -19,17 +20,21 @@ const wallet = (state = INITIAL_STATE, action) => {
     return { ...state, loading: true, errorMessage: '' };
   }
 
-  case REQUEST_SUCCESSFUL: {
+  case REQUEST_CURRENCIES_SUCCESSFUL: {
     return { ...state, loading: false, currencies: action.payload };
   }
 
-  case REQUEST_FAILED: {
+  case REQUEST_CURRENCIES_FAILED: {
     return {
       ...state,
       loading: false,
       errorMessage: action.payload,
       currencies: [],
     };
+  }
+
+  case ADD_EXPENSE: {
+    return { ...state, expenses: [...state.expenses, action.payload] };
   }
 
   default: {

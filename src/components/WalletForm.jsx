@@ -3,10 +3,22 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Input from './form/Input';
 import Select from './form/Select';
+import SubmitButton from './form/SubmitButton';
 
-import { fetchCurrencies } from '../redux/actions';
+import { fetchCurrencies, addExpense } from '../redux/actions';
 
 export default function WalletForm() {
+  const URL = 'https://economia.awesomeapi.com.br/json/all';
+
+  const INITIAL_STATE = {
+    value: '',
+    description: '',
+    currency: 'USD',
+    method: 'Dinheiro',
+    tag: 'Alimentação',
+  };
+
+  const [expense, setExpense] = useState(INITIAL_STATE);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -14,21 +26,35 @@ export default function WalletForm() {
   }, []);
 
   const currencies = useSelector((state) => state.wallet.currencies);
-
-  const [expense, setExpense] = useState({
-    value: '',
-    description: '',
-    currency: '',
-    method: '',
-    tag: '',
-  });
+  const expenses = useSelector((state) => state.wallet.expenses);
 
   const handleChange = ({ target: { name, value } }) => {
     setExpense({ ...expense, [name]: value });
   };
 
+  const fetchAsks = async (endpoint) => {
+    try {
+      const response = await fetch(endpoint);
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      return error.message;
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const asks = await fetchAsks(URL);
+    const newExpense = { ...expense, id: expenses.length, exchangeRates: asks };
+    dispatch(addExpense(newExpense));
+
+    setExpense(INITIAL_STATE);
+  };
+
   return (
-    <form onSubmit={ () => {} }>
+    <form onSubmit={ (event) => handleSubmit(event) }>
       <Input
         text="Valor: "
         type="text"
@@ -72,6 +98,11 @@ export default function WalletForm() {
         options={ ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'] }
         dataTestId="tag-input"
         name="tag"
+      />
+
+      <SubmitButton
+        disabled={ false }
+        text="Adicionar despesa"
       />
     </form>
   );
