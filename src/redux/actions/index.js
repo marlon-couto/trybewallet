@@ -4,6 +4,7 @@ export const REQUEST_CURRENCIES_FAILED = 'REQUEST_CURRENCIES_SUCCESSFUL';
 
 export const ADD_EMAIL = 'ADD_EMAIL';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 const URL = 'https://economia.awesomeapi.com.br/json/all';
 
@@ -27,6 +28,11 @@ export const addEmail = (email) => ({
 export const addExpense = (expense) => ({
   type: ADD_EXPENSE,
   payload: expense,
+});
+
+export const deleteExpense = (id) => ({
+  type: DELETE_EXPENSE,
+  payload: id,
 });
 
 export const fetchCurrencies = () => async (dispatch) => {
