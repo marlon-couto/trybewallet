@@ -5,11 +5,11 @@ export default function Header() {
   const email = useSelector((state) => state.user.email);
   const expenses = useSelector((state) => state.wallet.expenses);
 
-  const total = expenses.reduce((acc, { value, exchangeRates, currency }) => {
+  const total = expenses.reduce((accumulator, { value, exchangeRates, currency }) => {
     const exchangeRate = exchangeRates[currency].ask;
     const parsedValue = parseFloat(value) * parseFloat(exchangeRate);
 
-    return acc + parsedValue;
+    return accumulator + parsedValue;
   }, 0);
 
   return (
