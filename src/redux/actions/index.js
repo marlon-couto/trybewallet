@@ -1,23 +1,16 @@
-export const REQUEST_STARTED = 'REQUEST_STARTED';
 export const REQUEST_CURRENCIES_SUCCESSFUL = 'REQUEST_CURRENCIES_SUCCESSFUL';
-export const REQUEST_CURRENCIES_FAILED = 'REQUEST_CURRENCIES_SUCCESSFUL';
 
 export const ADD_EMAIL = 'ADD_EMAIL';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
+export const OPEN_EDITOR = 'OPEN_EDITOR';
 
 const URL = 'https://economia.awesomeapi.com.br/json/all';
-
-const requestStarted = () => ({ type: REQUEST_STARTED });
 
 const requestCurrenciesSuccessful = (currencies) => ({
   type: REQUEST_CURRENCIES_SUCCESSFUL,
   payload: currencies,
-});
-
-const requestCurrenciesFailed = (error) => ({
-  type: REQUEST_CURRENCIES_FAILED,
-  payload: error,
 });
 
 export const addEmail = (email) => ({
@@ -35,9 +28,17 @@ export const deleteExpense = (id) => ({
   payload: id,
 });
 
-export const fetchCurrencies = () => async (dispatch) => {
-  dispatch(requestStarted());
+export const openEditor = (id) => ({
+  type: OPEN_EDITOR,
+  payload: id,
+});
 
+export const editExpense = (expense) => ({
+  type: EDIT_EXPENSE,
+  payload: expense,
+});
+
+export const fetchCurrencies = () => async (dispatch) => {
   try {
     const response = await fetch(URL);
     const data = await response.json();
@@ -48,6 +49,6 @@ export const fetchCurrencies = () => async (dispatch) => {
 
     dispatch(requestCurrenciesSuccessful(currencies));
   } catch (error) {
-    dispatch(requestCurrenciesFailed(error));
+    return error.message;
   }
 };

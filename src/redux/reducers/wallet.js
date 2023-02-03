@@ -1,9 +1,9 @@
 import {
-  REQUEST_STARTED,
-  REQUEST_CURRENCIES_FAILED,
   REQUEST_CURRENCIES_SUCCESSFUL,
   ADD_EXPENSE,
   DELETE_EXPENSE,
+  EDIT_EXPENSE,
+  OPEN_EDITOR,
 } from '../actions/index';
 
 const INITIAL_STATE = {
@@ -11,37 +11,44 @@ const INITIAL_STATE = {
   expenses: [],
   editor: false,
   idToEdit: 0,
-  loading: false,
-  errorMessage: '',
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case REQUEST_STARTED: {
-    return { ...state, loading: true, errorMessage: '' };
-  }
-
   case REQUEST_CURRENCIES_SUCCESSFUL: {
     return { ...state, loading: false, currencies: action.payload };
   }
 
-  case REQUEST_CURRENCIES_FAILED: {
+  case ADD_EXPENSE: {
     return {
       ...state,
-      loading: false,
-      errorMessage: action.payload,
-      currencies: [],
+      expenses: [...state.expenses, action.payload],
     };
-  }
-
-  case ADD_EXPENSE: {
-    return { ...state, expenses: [...state.expenses, action.payload] };
   }
 
   case DELETE_EXPENSE: {
     return {
       ...state,
       expenses: state.expenses.filter(({ id }) => id !== action.payload),
+    };
+  }
+
+  case OPEN_EDITOR: {
+    return {
+      ...state,
+      editor: true,
+      idToEdit: action.payload,
+    };
+  }
+
+  case EDIT_EXPENSE: {
+    const updatedExpenses = [...state.expenses];
+    updatedExpenses[action.payload.id] = action.payload;
+
+    return {
+      ...state,
+      editor: false,
+      expenses: updatedExpenses,
     };
   }
 

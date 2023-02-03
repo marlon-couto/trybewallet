@@ -1,8 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
 import EditButton from './EditButton';
-import { deleteExpense } from '../../redux/actions/index';
+import { deleteExpense, openEditor } from '../../redux/actions/index';
 
 export default function TableBody() {
   const expenses = useSelector((state) => state.wallet.expenses);
@@ -25,6 +24,12 @@ export default function TableBody() {
             </td>
             <td>Real</td>
             <td>
+              <EditButton
+                text="Editar"
+                dataTestId="edit-btn"
+                handleClick={ () => dispatch(openEditor(id)) }
+              />
+
               <EditButton
                 text="Excluir"
                 dataTestId="delete-btn"

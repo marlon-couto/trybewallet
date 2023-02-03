@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-export default function SubmitButton({ disabled, text }) {
+export default function SubmitButton({ disabled, text, handleClick }) {
   return (
     <button
-      type="submit"
+      type="button"
       disabled={ disabled }
+      onClick={ handleClick }
     >
       {text}
     </button>
@@ -15,4 +16,5 @@ export default function SubmitButton({ disabled, text }) {
 SubmitButton.propTypes = {
   disabled: PropTypes.bool,
   text: PropTypes.string,
+  handleClick: PropTypes.func,
 }.isRequired;

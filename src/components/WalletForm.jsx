@@ -5,28 +5,38 @@ import Input from './form/Input';
 import Select from './form/Select';
 import SubmitButton from './form/SubmitButton';
 
-import { fetchCurrencies, addExpense } from '../redux/actions';
+import { fetchCurrencies, addExpense, editExpense } from '../redux/actions';
+
+const INITIAL_STATE = {
+  value: '',
+  description: '',
+  currency: 'USD',
+  method: 'Dinheiro',
+  tag: 'Alimentação',
+};
+
+const URL = 'https://economia.awesomeapi.com.br/json/all';
 
 export default function WalletForm() {
-  const URL = 'https://economia.awesomeapi.com.br/json/all';
-
-  const INITIAL_STATE = {
-    value: '',
-    description: '',
-    currency: 'USD',
-    method: 'Dinheiro',
-    tag: 'Alimentação',
-  };
-
   const [expense, setExpense] = useState(INITIAL_STATE);
+
+  const expenses = useSelector((state) => state.wallet.expenses);
+  const editor = useSelector((state) => state.wallet.editor);
+  const idToEdit = useSelector((state) => state.wallet.idToEdit);
+  const currencies = useSelector((state) => state.wallet.currencies);
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (editor) {
+      const expenseToEdit = expenses.find(({ id }) => id === idToEdit);
+      setExpense(expenseToEdit);
+    }
+  }, [editor, expenses, idToEdit]);
 
   useEffect(() => {
     dispatch(fetchCurrencies());
   }, []);
-
-  const currencies = useSelector((state) => state.wallet.currencies);
-  const expenses = useSelector((state) => state.wallet.expenses);
 
   const handleChange = ({ target: { name, value } }) => {
     setExpense({ ...expense, [name]: value });
@@ -43,18 +53,21 @@ export default function WalletForm() {
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const createExpense = async () => {
     const asks = await fetchAsks(URL);
     const newExpense = { ...expense, id: expenses.length, exchangeRates: asks };
-    dispatch(addExpense(newExpense));
 
+    dispatch(addExpense(newExpense));
+    setExpense(INITIAL_STATE);
+  };
+
+  const patchExpense = async () => {
+    dispatch(editExpense({ ...expense }));
     setExpense(INITIAL_STATE);
   };
 
   return (
-    <form onSubmit={ (event) => handleSubmit(event) }>
+    <form>
       <Input
         text="Valor: "
         type="text"
@@ -100,10 +113,19 @@ export default function WalletForm() {
         name="tag"
       />
 
-      <SubmitButton
-        disabled={ false }
-        text="Adicionar despesa"
-      />
+      {!editor ? (
+        <SubmitButton
+          disabled={ false }
+          text="Adicionar despesa"
+          handleClick={ () => createExpense() }
+        />
+      ) : (
+        <SubmitButton
+          disabled={ false }
+          text="Editar despesa"
+          handleClick={ () => patchExpense() }
+        />
+      )}
     </form>
   );
 }

@@ -37,14 +37,13 @@ export default function LoginForm() {
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     dispatch(addEmail(form.email));
     history.push('/carteira');
   };
 
   return (
-    <form onSubmit={ (event) => handleSubmit(event) }>
+    <form>
       <Input
         text="Email: "
         type="email"
@@ -66,6 +65,7 @@ export default function LoginForm() {
       <SubmitButton
         disabled={ disabled }
         text="Entrar"
+        handleClick={ () => handleSubmit() }
       />
     </form>
   );
