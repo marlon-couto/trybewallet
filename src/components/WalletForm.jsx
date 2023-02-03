@@ -6,6 +6,7 @@ import Select from './form/Select';
 import SubmitButton from './form/SubmitButton';
 
 import { fetchCurrencies, addExpense, editExpense } from '../redux/actions';
+import fetchApi from '../helpers/fetchApi';
 
 const INITIAL_STATE = {
   value: '',
@@ -14,8 +15,6 @@ const INITIAL_STATE = {
   method: 'Dinheiro',
   tag: 'Alimentação',
 };
-
-const URL = 'https://economia.awesomeapi.com.br/json/all';
 
 export default function WalletForm() {
   const [expense, setExpense] = useState(INITIAL_STATE);
@@ -42,20 +41,9 @@ export default function WalletForm() {
     setExpense({ ...expense, [name]: value });
   };
 
-  const fetchAsks = async (endpoint) => {
-    try {
-      const response = await fetch(endpoint);
-      const data = await response.json();
-
-      return data;
-    } catch (error) {
-      return error.message;
-    }
-  };
-
   const createExpense = async () => {
-    const asks = await fetchAsks(URL);
-    const newExpense = { ...expense, id: expenses.length, exchangeRates: asks };
+    const data = await fetchApi();
+    const newExpense = { ...expense, id: expenses.length, exchangeRates: data };
 
     dispatch(addExpense(newExpense));
     setExpense(INITIAL_STATE);

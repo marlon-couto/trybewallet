@@ -1,3 +1,5 @@
+import fetchApi from '../../helpers/fetchApi';
+
 export const REQUEST_CURRENCIES_SUCCESSFUL = 'REQUEST_CURRENCIES_SUCCESSFUL';
 
 export const ADD_EMAIL = 'ADD_EMAIL';
@@ -5,8 +7,6 @@ export const ADD_EXPENSE = 'ADD_EXPENSE';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 export const OPEN_EDITOR = 'OPEN_EDITOR';
-
-const URL = 'https://economia.awesomeapi.com.br/json/all';
 
 const requestCurrenciesSuccessful = (currencies) => ({
   type: REQUEST_CURRENCIES_SUCCESSFUL,
@@ -39,16 +39,10 @@ export const editExpense = (expense) => ({
 });
 
 export const fetchCurrencies = () => async (dispatch) => {
-  try {
-    const response = await fetch(URL);
-    const data = await response.json();
+  const data = await fetchApi();
+  const currencies = Object.keys(data).filter(
+    (currency) => currency !== 'USDT',
+  );
 
-    const currencies = Object.keys(data).filter(
-      (currency) => currency !== 'USDT',
-    );
-
-    dispatch(requestCurrenciesSuccessful(currencies));
-  } catch (error) {
-    return error.message;
-  }
+  dispatch(requestCurrenciesSuccessful(currencies));
 };
