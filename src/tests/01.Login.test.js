@@ -9,7 +9,7 @@ const VALID_PASSWORD = '123456';
 const INVALID_EMAIL = 'emailinvalido';
 const INVALID_PASSWORD = '123';
 
-describe('Realiza os testes na página de login', () => {
+describe('1 - Realiza os testes no componente Login', () => {
   it('renderiza a página de Login na rota "/"', () => {
     renderWithRouterAndRedux(<App />);
     expect(screen.queryByText('Login')).toBeInTheDocument();
