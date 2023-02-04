@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-
 import Input from './form/Input';
 import SubmitButton from './form/SubmitButton';
-
 import { addEmail } from '../redux/actions/index';
 
 export default function LoginForm() {
-  const dispatch = useDispatch();
-  const history = useHistory();
-
   const [form, setForm] = useState({ email: '', password: '' });
   const [disabled, setDisabled] = useState(true);
+  const history = useHistory();
+  const dispatch = useDispatch();
 
   const validateEmail = (value) => {
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;

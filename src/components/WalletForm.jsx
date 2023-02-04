@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import Input from './form/Input';
 import Select from './form/Select';
 import SubmitButton from './form/SubmitButton';
-
-import { fetchCurrencies, addExpense, editExpense } from '../redux/actions';
 import fetchApi from '../helpers/fetchApi';
+import { fetchCurrencies, addExpense, editExpense } from '../redux/actions';
 
 const INITIAL_STATE = {
   value: '',
@@ -18,12 +16,10 @@ const INITIAL_STATE = {
 
 export default function WalletForm() {
   const [expense, setExpense] = useState(INITIAL_STATE);
-
   const expenses = useSelector((state) => state.wallet.expenses);
   const editor = useSelector((state) => state.wallet.editor);
   const idToEdit = useSelector((state) => state.wallet.idToEdit);
   const currencies = useSelector((state) => state.wallet.currencies);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -50,7 +46,7 @@ export default function WalletForm() {
   };
 
   const patchExpense = async () => {
-    dispatch(editExpense({ ...expense }));
+    dispatch(editExpense(expense));
     setExpense(INITIAL_STATE);
   };
 
@@ -58,7 +54,7 @@ export default function WalletForm() {
     <form>
       <Input
         text="Valor: "
-        type="text"
+        type="number"
         name="value"
         dataTestId="value-input"
         value={ expense.value }

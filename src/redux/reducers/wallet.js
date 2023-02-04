@@ -42,13 +42,14 @@ const wallet = (state = INITIAL_STATE, action) => {
   }
 
   case EDIT_EXPENSE: {
-    const updatedExpenses = [...state.expenses];
+    const updatedExpenses = state.expenses;
+
     updatedExpenses[action.payload.id] = action.payload;
 
     return {
       ...state,
       editor: false,
-      expenses: updatedExpenses,
+      expenses: [...updatedExpenses],
     };
   }
 

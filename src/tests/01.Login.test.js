@@ -1,13 +1,9 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
+import { VALID_EMAIL, INVALID_EMAIL, VALID_PASSWORD, INVALID_PASSWORD } from './helpers/mocks';
 
 import App from '../App';
-
-const VALID_EMAIL = 'email@teste.com';
-const VALID_PASSWORD = '123456';
-const INVALID_EMAIL = 'emailinvalido';
-const INVALID_PASSWORD = '123';
 
 describe('1 - Realiza os testes no componente Login', () => {
   it('renderiza a página de Login na rota "/"', () => {
@@ -19,6 +15,7 @@ describe('1 - Realiza os testes no componente Login', () => {
     renderWithRouterAndRedux(<App />);
 
     const emailInput = screen.queryByLabelText(/email/i);
+
     expect(emailInput).toBeInTheDocument();
     expect(emailInput).toHaveAttribute('data-testid', 'email-input');
   });
@@ -27,12 +24,14 @@ describe('1 - Realiza os testes no componente Login', () => {
     renderWithRouterAndRedux(<App />);
 
     const passwordInput = screen.queryByLabelText(/senha/i);
+
     expect(passwordInput).toBeInTheDocument();
     expect(passwordInput).toHaveAttribute('data-testid', 'password-input');
   });
 
   it('renderiza o botão "Entrar" na tela de login', () => {
     renderWithRouterAndRedux(<App />);
+
     expect(
       screen.queryByRole('button', { name: /entrar/i }),
     ).toBeInTheDocument();
@@ -68,6 +67,7 @@ describe('1 - Realiza os testes no componente Login', () => {
 
     userEvent.type(emailInput, VALID_EMAIL);
     userEvent.type(passwordInput, VALID_PASSWORD);
+
     expect(submitButton).toBeEnabled();
   });
 
@@ -77,6 +77,7 @@ describe('1 - Realiza os testes no componente Login', () => {
     userEvent.type(screen.queryByLabelText(/email/i), VALID_EMAIL);
     userEvent.type(screen.queryByLabelText(/senha/i), VALID_PASSWORD);
     userEvent.click(screen.queryByRole('button', { name: /entrar/i }));
+
     expect(store.getState().user.email).toBe(VALID_EMAIL);
   });
 
@@ -86,6 +87,7 @@ describe('1 - Realiza os testes no componente Login', () => {
     userEvent.type(screen.queryByLabelText(/email/i), VALID_EMAIL);
     userEvent.type(screen.queryByLabelText(/senha/i), VALID_PASSWORD);
     userEvent.click(screen.queryByRole('button', { name: /entrar/i }));
+
     expect(history.location.pathname).toBe('/carteira');
   });
 });

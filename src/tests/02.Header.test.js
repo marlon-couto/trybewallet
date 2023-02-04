@@ -1,15 +1,11 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
+import { VALID_EMAIL, VALID_PASSWORD, initialEntries } from './helpers/mocks';
 
 import App from '../App';
 
-const VALID_EMAIL = 'email@teste.com';
-const VALID_PASSWORD = '123456';
-
 describe('2 - Realiza os testes no componente Header', () => {
-  const initialEntries = ['/carteira'];
-
   it('exibe o email da pessoa logada ao renderizar o componente Header', () => {
     renderWithRouterAndRedux(<App />);
 
@@ -18,6 +14,7 @@ describe('2 - Realiza os testes no componente Header', () => {
     userEvent.click(screen.queryByRole('button', { name: /entrar/i }));
 
     const emailField = screen.queryByTestId('email-field');
+
     expect(emailField).toBeInTheDocument();
     expect(emailField).toHaveTextContent(VALID_EMAIL);
   });
@@ -26,6 +23,7 @@ describe('2 - Realiza os testes no componente Header', () => {
     renderWithRouterAndRedux(<App />, { initialEntries });
 
     const totalField = screen.queryByTestId('total-field');
+
     expect(totalField).toBeInTheDocument();
     expect(totalField).toHaveTextContent('0');
   });
@@ -34,6 +32,7 @@ describe('2 - Realiza os testes no componente Header', () => {
     renderWithRouterAndRedux(<App />, { initialEntries });
 
     const currencyField = screen.queryByTestId('header-currency-field');
+
     expect(currencyField).toBeInTheDocument();
     expect(currencyField).toHaveTextContent('BRL');
   });

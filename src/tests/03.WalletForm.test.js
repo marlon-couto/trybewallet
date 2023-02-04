@@ -1,22 +1,12 @@
 import { screen } from '@testing-library/react';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
-import fetchApi from '../helpers/fetchApi';
+import { initialEntries, initialState } from './helpers/mocks';
 import mockData from './helpers/mockData';
 
 import App from '../App';
-
-const initialState = {
-  wallet: {
-    currencies: Object.keys(mockData).filter((currency) => currency !== 'USDT'),
-    expenses: [],
-    editor: false,
-    idToEdit: 0,
-  },
-};
+import fetchApi from '../helpers/fetchApi';
 
 describe('3 - Realiza os testes no componente WalletForm', () => {
-  const initialEntries = ['/carteira'];
-
   it('renderiza um campo para adicionar o valor da despesa', () => {
     renderWithRouterAndRedux(<App />, { initialEntries });
     expect(screen.queryByTestId('value-input')).toBeInTheDocument();
@@ -52,10 +42,11 @@ describe('3 - Realiza os testes no componente WalletForm', () => {
     const data = await fetchApi();
 
     expect(global.fetch).toHaveBeenCalled();
+    expect(data).toEqual(mockData);
+
     expect(global.fetch).toHaveBeenCalledWith(
       'https://economia.awesomeapi.com.br/json/all',
     );
-    expect(data).toEqual(mockData);
   });
 
   it('o estado global é um array com as moedas retornadas pela API, sem a opção "USDT"', async () => {
@@ -64,11 +55,11 @@ describe('3 - Realiza os testes no componente WalletForm', () => {
       initialState,
     });
 
-    const storeCurrencies = store.getState().wallet.currencies;
+    const { currencies } = store.getState().wallet;
 
-    expect(Array.isArray(storeCurrencies)).toBe(true);
-    expect(storeCurrencies).toHaveLength(15);
-    expect(storeCurrencies.includes('USDT')).toBe(false);
+    expect(Array.isArray(currencies)).toBe(true);
+    expect(currencies).toHaveLength(15);
+    expect(currencies.includes('USDT')).toBe(false);
   });
 
   it('os valores das options do campo de Moedas são preenchidas com as moedas vindas do estado global', () => {
@@ -77,9 +68,9 @@ describe('3 - Realiza os testes no componente WalletForm', () => {
       initialState,
     });
 
-    const storeCurrencies = store.getState().wallet.currencies;
+    const { currencies } = store.getState().wallet;
 
-    storeCurrencies.forEach((currency) => {
+    currencies.forEach((currency) => {
       expect(
         screen.queryByRole('option', { name: currency }),
       ).toBeInTheDocument();
