@@ -35,7 +35,7 @@ export default function WalletForm() {
 
   useEffect(() => {
     dispatch(fetchCurrencies());
-  }, []);
+  }, [dispatch]);
 
   const handleChange = ({ target: { name, value } }) => {
     setExpense({ ...expense, [name]: value });

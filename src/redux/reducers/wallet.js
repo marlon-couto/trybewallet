@@ -1,5 +1,5 @@
 import {
-  REQUEST_CURRENCIES_SUCCESSFUL,
+  REQUEST_CURRENCIES,
   ADD_EXPENSE,
   DELETE_EXPENSE,
   EDIT_EXPENSE,
@@ -15,7 +15,7 @@ const INITIAL_STATE = {
 
 const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case REQUEST_CURRENCIES_SUCCESSFUL: {
+  case REQUEST_CURRENCIES: {
     return { ...state, loading: false, currencies: action.payload };
   }
 

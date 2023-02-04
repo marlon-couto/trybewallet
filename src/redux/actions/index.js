@@ -1,15 +1,14 @@
 import fetchApi from '../../helpers/fetchApi';
 
-export const REQUEST_CURRENCIES_SUCCESSFUL = 'REQUEST_CURRENCIES_SUCCESSFUL';
-
 export const ADD_EMAIL = 'ADD_EMAIL';
+export const REQUEST_CURRENCIES = 'REQUEST_CURRENCIES';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 export const OPEN_EDITOR = 'OPEN_EDITOR';
 
-const requestCurrenciesSuccessful = (currencies) => ({
-  type: REQUEST_CURRENCIES_SUCCESSFUL,
+const requestCurrencies = (currencies) => ({
+  type: REQUEST_CURRENCIES,
   payload: currencies,
 });
 
@@ -40,9 +39,9 @@ export const editExpense = (expense) => ({
 
 export const fetchCurrencies = () => async (dispatch) => {
   const data = await fetchApi();
-  const currencies = Object.keys(data).filter(
-    (currency) => currency !== 'USDT',
-  );
 
-  dispatch(requestCurrenciesSuccessful(currencies));
+  delete data.USDT;
+  const currencies = Object.keys(data);
+
+  dispatch(requestCurrencies(currencies));
 };
