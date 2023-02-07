@@ -1,7 +1,12 @@
 import { screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
-import { initialEntries, initialState, MOCK_EXPENSE } from './helpers/mocks';
+
+import {
+  initialEntries,
+  initialStateEmpty as initialState,
+  MOCK_EXPENSE,
+} from './helpers/mocks';
 
 import App from '../App';
 import { addExpense } from '../redux/actions';
@@ -48,14 +53,46 @@ describe('4 - Realiza os testes ao tentar adicionar uma despesa', () => {
     expect(expenses[0].tag).toBe(tag);
   });
 
-  it.todo('atribui à cada despesa um id numérico sequencial que inicia em 0');
+  it('atribui à cada despesa um id numérico sequencial que inicia em 0', () => {
+    const { store } = renderWithRouterAndRedux(<App />, {
+      initialEntries,
+      initialState,
+    });
 
-  it.todo('faz uma requisição à API quando o botão de "Adicionar despesa" é clicado');
+    const valueInput = screen.queryByTestId(/value-input/i);
+    const descriptionInput = screen.queryByTestId(/description-input/i);
+    const currencyInput = screen.queryByTestId(/currency-input/i);
+    const methodInput = screen.queryByTestId(/method-input/i);
+    const tagInput = screen.queryByTestId(/tag-input/i);
+    const addButton = screen.queryByText(textButton);
+
+    const { value, description, currency, method, tag } = MOCK_EXPENSE;
+
+    valueInput.value = value;
+    descriptionInput.value = description;
+    currencyInput.value = currency;
+    methodInput.value = method;
+    tagInput.value = tag;
+
+    act(() => {
+      userEvent.click(addButton);
+      store.dispatch(addExpense(MOCK_EXPENSE));
+    });
+
+    expect(store.getState().wallet.expenses[0].id).toBe(0);
+  });
+
+  it.todo(
+    'faz uma requisição à API quando o botão de "Adicionar despesa" é clicado',
+  );
 
   it.todo('atualiza o Header corretamente com o valor total das despesas');
 
-  it.skip('limpa o formulário após o clique no botão "Adicionar despesa"', () => {
-    renderWithRouterAndRedux(<App />, { initialEntries, initialState });
+  it('limpa o formulário após o clique no botão "Adicionar despesa"', () => {
+    const { store } = renderWithRouterAndRedux(<App />, {
+      initialEntries,
+      initialState,
+    });
 
     const valueInput = screen.queryByTestId('value-input');
     const descriptionInput = screen.queryByTestId('description-input');
@@ -74,6 +111,7 @@ describe('4 - Realiza os testes ao tentar adicionar uma despesa', () => {
 
     act(() => {
       userEvent.click(addButton);
+      store.dispatch(addExpense(MOCK_EXPENSE));
     });
 
     expect(valueInput.value).toBe('');

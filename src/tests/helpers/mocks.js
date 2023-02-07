@@ -27,10 +27,19 @@ export const INITIAL_STATE = {
 
 export const initialEntries = ['/carteira'];
 
-export const initialState = {
+export const initialStateEmpty = {
   wallet: {
     currencies: Object.keys(mockData).filter((currency) => currency !== 'USDT'),
     expenses: [],
+    editor: false,
+    idToEdit: 0,
+  },
+};
+
+export const initialStateFilled = {
+  wallet: {
+    currencies: Object.keys(mockData).filter((currency) => currency !== 'USDT'),
+    expenses: [MOCK_EXPENSE],
     editor: false,
     idToEdit: 0,
   },

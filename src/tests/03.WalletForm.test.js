@@ -1,7 +1,11 @@
 import { screen } from '@testing-library/react';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
-import { initialEntries, initialState } from './helpers/mocks';
 import mockData from './helpers/mockData';
+
+import {
+  initialEntries,
+  initialStateEmpty as initialState,
+} from './helpers/mocks';
 
 import App from '../App';
 import fetchApi from '../helpers/fetchApi';

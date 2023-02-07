@@ -50,7 +50,6 @@ const wallet = (state = INITIAL_STATE, action) => {
   3. Retorna o estado com o array de despesas atualizado */
   case EDIT_EXPENSE: {
     const updatedExpenses = state.expenses;
-
     updatedExpenses[payload.id] = payload;
 
     return {

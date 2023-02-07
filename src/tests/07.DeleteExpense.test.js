@@ -2,7 +2,12 @@ import React from 'react';
 import { screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
-import { initialState, initialEntries, MOCK_EXPENSE } from './helpers/mocks';
+
+import {
+  initialStateEmpty as initialState,
+  initialEntries,
+  MOCK_EXPENSE,
+} from './helpers/mocks';
 
 import App from '../App';
 import { deleteExpense, addExpense } from '../redux/actions';
