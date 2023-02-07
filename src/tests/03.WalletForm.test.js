@@ -9,30 +9,30 @@ import fetchApi from '../helpers/fetchApi';
 describe('3 - Realiza os testes no componente WalletForm', () => {
   it('renderiza um campo para adicionar o valor da despesa', () => {
     renderWithRouterAndRedux(<App />, { initialEntries });
-    expect(screen.queryByTestId('value-input')).toBeInTheDocument();
+    expect(screen.queryByTestId(/value-input/i)).toBeInTheDocument();
   });
 
   it('renderiza um campo para adicionar a descrição da despesa', () => {
     renderWithRouterAndRedux(<App />, { initialEntries });
-    expect(screen.queryByTestId('description-input')).toBeInTheDocument();
+    expect(screen.queryByTestId(/description-input/i)).toBeInTheDocument();
   });
 
   it('renderiza um campo para selecionar a moeda da despesa', () => {
     renderWithRouterAndRedux(<App />, { initialEntries });
-    expect(screen.queryByTestId('currency-input').tagName).toBe('SELECT');
+    expect(screen.queryByTestId(/currency-input/i).tagName).toBe('SELECT');
   });
 
   it('renderiza um campo para selecionar o método de pagamento da despesa', () => {
     renderWithRouterAndRedux(<App />, { initialEntries });
-    expect(screen.queryByTestId('method-input').tagName).toBe('SELECT');
+    expect(screen.queryByTestId(/method-input/i).tagName).toBe('SELECT');
   });
 
   it('renderiza um campo para selecionar a tag da despesa', () => {
     renderWithRouterAndRedux(<App />, { initialEntries });
-    expect(screen.queryByTestId('tag-input').tagName).toBe('SELECT');
+    expect(screen.queryByTestId(/tag-input/i).tagName).toBe('SELECT');
   });
 
-  it('é feita uma requisição das "currencies" à API no endpoint correto', async () => {
+  it('faz uma requisição das "currencies" à API no endpoint correto', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries });
 
     jest.spyOn(global, 'fetch').mockImplementation(() => Promise.resolve({
@@ -49,7 +49,7 @@ describe('3 - Realiza os testes no componente WalletForm', () => {
     );
   });
 
-  it('o estado global é um array com as moedas retornadas pela API, sem a opção "USDT"', async () => {
+  it('verifica se o estado global é um array com as moedas retornadas pela API, sem a opção "USDT"', async () => {
     const { store } = renderWithRouterAndRedux(<App />, {
       initialEntries,
       initialState,
@@ -62,7 +62,7 @@ describe('3 - Realiza os testes no componente WalletForm', () => {
     expect(currencies.includes('USDT')).toBe(false);
   });
 
-  it('os valores das options do campo de Moedas são preenchidas com as moedas vindas do estado global', () => {
+  it('preenche os valores das options do campo de Moedas com as moedas vindas do estado global', () => {
     const { store } = renderWithRouterAndRedux(<App />, {
       initialEntries,
       initialState,
@@ -77,7 +77,7 @@ describe('3 - Realiza os testes no componente WalletForm', () => {
     });
   });
 
-  it('os valores das options do campo de Método de pagamento são preenchidas com as opções certas', () => {
+  it('preenche os valores das options do campo de Método de pagamento com as opções corretas', () => {
     renderWithRouterAndRedux(<App />, { initialEntries });
 
     const methods = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
@@ -89,7 +89,7 @@ describe('3 - Realiza os testes no componente WalletForm', () => {
     });
   });
 
-  it('os valores das options do campo de Categoria são preenchidas com as opções certas', () => {
+  it('preenche os valores das options do campo de Categoria com as opções corretas', () => {
     renderWithRouterAndRedux(<App />, { initialEntries });
 
     const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];

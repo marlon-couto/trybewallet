@@ -8,7 +8,7 @@ import App from '../App';
 describe('1 - Realiza os testes no componente Login', () => {
   it('renderiza a página de Login na rota "/"', () => {
     renderWithRouterAndRedux(<App />);
-    expect(screen.queryByText('Login')).toBeInTheDocument();
+    expect(screen.queryByText(/login/i)).toBeInTheDocument();
   });
 
   it('renderiza o campo "Email" na tela de login', () => {

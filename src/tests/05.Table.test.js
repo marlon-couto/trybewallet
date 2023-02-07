@@ -5,7 +5,7 @@ import { initialEntries } from './helpers/mocks';
 import App from '../App';
 
 describe('5 - Realiza os testes do componente Table', () => {
-  it('a tabela é renderizada com sucesso', () => {
+  it('renderiza a tabela com sucesso', () => {
     renderWithRouterAndRedux(<App />, { initialEntries });
 
     expect(

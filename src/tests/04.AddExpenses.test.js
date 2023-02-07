@@ -7,24 +7,24 @@ import App from '../App';
 import { addExpense } from '../redux/actions';
 
 describe('4 - Realiza os testes ao tentar adicionar uma despesa', () => {
-  const textButton = 'Adicionar despesa';
+  const textButton = /adicionar despesa/i;
 
-  it('o formulário tem um botão com o texto Adicionar despesa', () => {
+  it('renderiza um botão no formulário com o texto "Adicionar despesa"', () => {
     renderWithRouterAndRedux(<App />, { initialEntries });
     expect(screen.queryByText(textButton)).toBeInTheDocument();
   });
 
-  it('os valores do formulário são salvos no estado global após o clique no botão "Adicionar despesa"', () => {
+  it('atualiza o estado global com os valores do formulário após o clique no botão "Adicionar despesa"', () => {
     const { store } = renderWithRouterAndRedux(<App />, {
       initialEntries,
       initialState,
     });
 
-    const valueInput = screen.queryByTestId('value-input');
-    const descriptionInput = screen.queryByTestId('description-input');
-    const currencyInput = screen.queryByTestId('currency-input');
-    const methodInput = screen.queryByTestId('method-input');
-    const tagInput = screen.queryByTestId('tag-input');
+    const valueInput = screen.queryByTestId(/value-input/i);
+    const descriptionInput = screen.queryByTestId(/description-input/i);
+    const currencyInput = screen.queryByTestId(/currency-input/i);
+    const methodInput = screen.queryByTestId(/method-input/i);
+    const tagInput = screen.queryByTestId(/tag-input/i);
     const addButton = screen.queryByText(textButton);
 
     const { value, description, currency, method, tag } = MOCK_EXPENSE;
@@ -48,13 +48,13 @@ describe('4 - Realiza os testes ao tentar adicionar uma despesa', () => {
     expect(expenses[0].tag).toBe(tag);
   });
 
-  it.todo('o id da despesa é um número sequencial que inicia em 0');
+  it.todo('atribui à cada despesa um id numérico sequencial que inicia em 0');
 
-  it.todo('é feita uma requisição à API quando o botão de "Adicionar despesa" é clicado');
+  it.todo('faz uma requisição à API quando o botão de "Adicionar despesa" é clicado');
 
-  it.todo('o Header é atualizado corretamente com o valor total das despesas');
+  it.todo('atualiza o Header corretamente com o valor total das despesas');
 
-  it.skip('o formulário é limpo após o clique no botão "Adicionar despesa"', () => {
+  it.skip('limpa o formulário após o clique no botão "Adicionar despesa"', () => {
     renderWithRouterAndRedux(<App />, { initialEntries, initialState });
 
     const valueInput = screen.queryByTestId('value-input');
