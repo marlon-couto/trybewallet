@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 import { initialEntries, initialState, MOCK_EXPENSE } from './helpers/mocks';
@@ -72,7 +72,9 @@ describe('4 - Realiza os testes ao tentar adicionar uma despesa', () => {
     methodInput.value = method;
     tagInput.value = tag;
 
-    userEvent.click(addButton);
+    act(() => {
+      userEvent.click(addButton);
+    });
 
     expect(valueInput.value).toBe('');
     expect(descriptionInput.value).toBe('');
