@@ -37,6 +37,9 @@ export const editExpense = (expense) => ({
   payload: expense,
 });
 
+/* Faz a requisição à API e atualiza o estado global com as moedas disponíveis.
+O dispatch é passado como parâmetro para que o thunk possa executá-lo.
+Antes de enviar os dados, remove a chave "USDT" do objeto e o transforma em array. */
 export const fetchCurrencies = () => async (dispatch) => {
   const data = await fetchApi();
 

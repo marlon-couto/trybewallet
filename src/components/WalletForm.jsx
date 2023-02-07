@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Input from './form/Input';
 import Select from './form/Select';
-import SubmitButton from './form/SubmitButton';
+import SubmitButton from './form/Button';
 import fetchApi from '../helpers/fetchApi';
-import { fetchCurrencies, addExpense, editExpense } from '../redux/actions';
+import { addExpense, editExpense } from '../redux/actions';
 
 const INITIAL_STATE = {
   value: '',
@@ -16,12 +16,16 @@ const INITIAL_STATE = {
 
 export default function WalletForm() {
   const [expense, setExpense] = useState(INITIAL_STATE);
-  const expenses = useSelector((state) => state.wallet.expenses);
-  const editor = useSelector((state) => state.wallet.editor);
-  const idToEdit = useSelector((state) => state.wallet.idToEdit);
-  const currencies = useSelector((state) => state.wallet.currencies);
   const dispatch = useDispatch();
 
+  // Busca as informações do estado global
+  const { currencies, expenses, editor, idToEdit } = useSelector(
+    ({ wallet }) => wallet,
+  );
+
+  /* Caso uma das variáveis abaixo mude e o editor seja true,
+  atualiza o estado com os dados da despesa a ser editada
+  Caso contrário, mantém o estado com os dados iniciais */
   useEffect(() => {
     if (editor) {
       const expenseToEdit = expenses.find(({ id }) => id === idToEdit);
@@ -29,14 +33,11 @@ export default function WalletForm() {
     }
   }, [editor, expenses, idToEdit]);
 
-  useEffect(() => {
-    dispatch(fetchCurrencies());
-  }, [dispatch]);
-
   const handleChange = ({ target: { name, value } }) => {
     setExpense({ ...expense, [name]: value });
   };
 
+  // Permite que o usuário adicione uma nova despesa
   const createExpense = async () => {
     const data = await fetchApi();
     const newExpense = { ...expense, id: expenses.length, exchangeRates: data };
@@ -45,6 +46,7 @@ export default function WalletForm() {
     setExpense(INITIAL_STATE);
   };
 
+  // Permite que o usuário edite uma despesa
   const patchExpense = async () => {
     dispatch(editExpense(expense));
     setExpense(INITIAL_STATE);
@@ -97,15 +99,14 @@ export default function WalletForm() {
         name="tag"
       />
 
+      {/* Caso editor seja true, altera o botão para "Editar despesa" */}
       {!editor ? (
         <SubmitButton
-          disabled={ false }
           text="Adicionar despesa"
           handleClick={ () => createExpense() }
         />
       ) : (
         <SubmitButton
-          disabled={ false }
           text="Editar despesa"
           handleClick={ () => patchExpense() }
         />

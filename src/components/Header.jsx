@@ -1,16 +1,21 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+// Renderiza o cabeçalho da página, exibindo o email do usuário e o total de gastos
 export default function Header() {
   const email = useSelector((state) => state.user.email);
   const expenses = useSelector((state) => state.wallet.expenses);
 
-  const total = expenses.reduce((accumulator, { value, exchangeRates, currency }) => {
-    const exchangeRate = exchangeRates[currency].ask;
-    const parsedValue = parseFloat(value) * parseFloat(exchangeRate);
+  // Calcula o total de gastos usando as informações do estado global
+  const total = expenses.reduce(
+    (accumulator, { value, exchangeRates, currency }) => {
+      const exchangeRate = exchangeRates[currency].ask;
+      const parsedValue = parseFloat(value) * parseFloat(exchangeRate);
 
-    return accumulator + parsedValue;
-  }, 0);
+      return accumulator + parsedValue;
+    },
+    0,
+  );
 
   return (
     <div>

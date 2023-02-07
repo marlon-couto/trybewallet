@@ -1,3 +1,4 @@
+// Faz a requisição à API e retorna um objeto com os dados das moedas
 const URL = 'https://economia.awesomeapi.com.br/json/all';
 
 const fetchApi = async () => {

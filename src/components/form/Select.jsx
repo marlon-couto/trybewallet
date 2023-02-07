@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+// Esse componente renderiza um select com valores dinâmicos
 export default function Select({
   name,
   text,

@@ -1,18 +1,25 @@
 import React from 'react';
 
+// Renderiza o cabeçalho da tabela
+const headers = [
+  'Descrição',
+  'Tag',
+  'Método de pagamento',
+  'Valor',
+  'Moeda',
+  'Câmbio utilizado',
+  'Valor convertido',
+  'Moeda de conversão',
+  'Editar/Excluir',
+];
+
 export default function TableHead() {
   return (
     <thead>
       <tr>
-        <th>Descrição</th>
-        <th>Tag</th>
-        <th>Método de pagamento</th>
-        <th>Valor</th>
-        <th>Moeda</th>
-        <th>Câmbio utilizado</th>
-        <th>Valor convertido</th>
-        <th>Moeda de conversão</th>
-        <th>Editar/Excluir</th>
+        {headers.map((header) => (
+          <th key={ header }>{header}</th>
+        ))}
       </tr>
     </thead>
   );

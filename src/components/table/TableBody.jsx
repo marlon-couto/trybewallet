@@ -1,10 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import EditButton from './EditButton';
+import Button from '../form/Button';
 import { deleteExpense, openEditor } from '../../redux/actions/index';
 
+/* Busca as informações do estado global e renderiza a tabela.
+Também permite a edição e deleção de um item da tabela pelos botões
+"Editar" e "Excluir". */
 export default function TableBody() {
-  const expenses = useSelector((state) => state.wallet.expenses);
+  const expenses = useSelector(({ wallet }) => wallet.expenses);
   const dispatch = useDispatch();
 
   return (
@@ -24,13 +27,13 @@ export default function TableBody() {
             </td>
             <td>Real</td>
             <td>
-              <EditButton
+              <Button
                 text="Editar"
                 dataTestId="edit-btn"
                 handleClick={ () => dispatch(openEditor(id)) }
               />
 
-              <EditButton
+              <Button
                 text="Excluir"
                 dataTestId="delete-btn"
                 handleClick={ () => dispatch(deleteExpense(id)) }

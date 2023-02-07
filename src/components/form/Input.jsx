@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+// Esse componente renderiza um input com valores dinâmicos
 export default function Input({ text, type, name, dataTestId, value, handleChange }) {
   return (
     <label htmlFor={ name }>
